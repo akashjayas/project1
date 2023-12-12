@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send OTP</title>
+</head>
+<body>
+
+<h2>Send OTP</h2>
+
+<form id="sendOtpForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <button type="button" onclick="sendOtp()">Send OTP</button>
+</form>
+
+<hr>
+
+<h2>Verify OTP</h2>
+
+<form id="verifyOtpForm">
+    <label for="otp">Enter OTP:</label>
+    <input type="text" id="otp" name="otp" required>
+    <button type="button" onclick="verifyOtp()">Verify OTP</button>
+</form>
+
+<script>
+    function sendOtp() {
+        var email = document.getElementById('email').value;
+        if (email.trim() === '') {
+            alert('Please enter your email.');
+            return;
+        }
+        fetch('/sendOtp/' + email, { method: 'POST' })
+            .then(response => response.text())
+            .then(message => alert(message))
+            .catch(error => console.error('Error sending OTP:', error));
+    }
+
+    function verifyOtp() {
+        var email = document.getElementById('email').value;
+        var otp = document.getElementById('otp').value;
+        if (otp.trim() === '') {
+            alert('Please enter the OTP.');
+            return;
+        }
+
+
+        fetch('/verifyOtp?email=' + email + '&otp=' + otp, { method: 'POST' })
+            .then(response => response.text())
+            .then(message => alert(message))
+            .catch(error => console.error('Error verifying OTP:', error));
+    }
+</script>
+
+</body>
+</html>
